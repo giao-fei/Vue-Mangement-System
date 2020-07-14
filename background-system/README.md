@@ -1,24 +1,7 @@
-# background-system
+# Vue电商管理后台管理系统
 
-## Project setup
+## 项目描述
 ```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
+该项目技术栈为 Vue全家桶 + nodejs作为后台 + element-ui Ui组件库 + axios作为前后端交互的工具
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
