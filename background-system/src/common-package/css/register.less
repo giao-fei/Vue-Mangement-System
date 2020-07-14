@@ -1,0 +1,87 @@
+// 全局样式
+.register_contain{
+    width: 100%;
+    height: 100%;
+    background-color: #f6f6f6;
+}
+// 表单部分
+.register_box{
+    background: white;
+    width: 450px;
+    height: 470px;
+    border-radius: 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    // 表单
+    .el-form {
+      width: 85%;
+      height: 470px;
+      margin: auto;
+      text-align: center;
+     // 每个el-item的长高
+      .el-form-item {
+          width: 100%;
+          height: 45px;
+          margin-top: 5px;
+          .el-input {
+              position: relative;
+          }
+          // X图标   
+          .iconfont.icon-qingchu{
+              font-size: 11px;
+              color: #c4c4cf;
+              position: absolute;
+              cursor: pointer;
+              right: 15px;
+          }
+          // 睁眼闭眼
+          .iconfont.icon-biyan,.icon-yanjing-zhengyan{
+              position: absolute;
+              cursor: pointer;
+              right: 15px;
+              color: #c4c4cf;
+          }   
+      }
+      // 按钮长度
+      .el_button {
+          width: 100%;
+      }
+      // 阿里字库   
+      .register_icon {
+          .already {
+            position: absolute; 
+            right: 0; 
+            font-size: 14px;
+            cursor: pointer;
+            color: #666666;
+          }
+          .social_register {
+            font-size: 14px;
+            position: absolute;
+            left: 0;
+            color: #666666;
+          }
+          .active {
+              color: #409eff;
+          }
+          .icon {
+              font-size: 25px;
+              margin: 5px;
+              position: relative;
+              left: -28px;
+              top: 3px;
+              cursor: pointer;
+          }
+          // 阿里图标高亮
+          .hight_light {
+              background-color: white;
+              opacity: 0.6;
+          }
+      }
+    }
+    
+
+}

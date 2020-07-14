@@ -1,0 +1,75 @@
+.register_contain {
+  width: 100%;
+  height: 100%;
+  background-color: #f6f6f6;
+}
+.register_box {
+  background: white;
+  width: 450px;
+  height: 470px;
+  border-radius: 5px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+.register_box .el-form {
+  width: 85%;
+  height: 470px;
+  margin: auto;
+  text-align: center;
+}
+.register_box .el-form .el-form-item {
+  width: 100%;
+  height: 45px;
+  margin-top: 5px;
+}
+.register_box .el-form .el-form-item .el-input {
+  position: relative;
+}
+.register_box .el-form .el-form-item .iconfont.icon-qingchu {
+  font-size: 11px;
+  color: #c4c4cf;
+  position: absolute;
+  cursor: pointer;
+  right: 15px;
+}
+.register_box .el-form .el-form-item .iconfont.icon-biyan,
+.register_box .el-form .el-form-item .icon-yanjing-zhengyan {
+  position: absolute;
+  cursor: pointer;
+  right: 15px;
+  color: #c4c4cf;
+}
+.register_box .el-form .el_button {
+  width: 100%;
+}
+.register_box .el-form .register_icon .already {
+  position: absolute;
+  right: 0;
+  font-size: 14px;
+  cursor: pointer;
+  color: #666666;
+}
+.register_box .el-form .register_icon .social_register {
+  font-size: 14px;
+  position: absolute;
+  left: 0;
+  color: #666666;
+}
+.register_box .el-form .register_icon .active {
+  color: #409eff;
+}
+.register_box .el-form .register_icon .icon {
+  font-size: 25px;
+  margin: 5px;
+  position: relative;
+  left: -28px;
+  top: 3px;
+  cursor: pointer;
+}
+.register_box .el-form .register_icon .hight_light {
+  background-color: white;
+  opacity: 0.6;
+}

@@ -1,0 +1,53 @@
+.login_contain {
+  width: 100%;
+  height: 100%;
+  background-color: #f6f6f6;
+}
+.login_box {
+  background: white;
+  width: 450px;
+  height: 360px;
+  border-radius: 5px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+.login_box .form {
+  width: 85%;
+  height: 270px;
+  margin: 15px auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+.login_box .form .form_item {
+  margin-bottom: 30px;
+  width: 100%;
+  height: 13%;
+}
+.login_box .form .form_item .iconfont {
+  position: absolute;
+  right: 15px;
+  font-size: 11px;
+  color: #c4c4cf;
+  cursor: pointer;
+}
+.login_box .form .input {
+  width: 100%;
+}
+.login_box .form .btn {
+  width: 100%;
+}
+.login_box .form .icon {
+  position: relative;
+  left: 100px;
+  top: -3px;
+  font-size: 25px;
+  cursor: pointer;
+  margin: 10px;
+}
+.login_box .form .active {
+  background-color: white;
+  opacity: 0.6;
+}
