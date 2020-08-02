@@ -30,17 +30,22 @@
         :data="search(keywords).slice((currentPage-1)*pagesize,currentPage*pagesize)"
         stripe
       >
-        <el-table-column type="index" label="#"></el-table-column>
+        <el-table-column type="index" label="ID" prop="_id"></el-table-column>
         <el-table-column label="姓名" prop="name"></el-table-column>
         <el-table-column label="邮箱" prop="email"></el-table-column>
         <el-table-column label="电话" prop="phone"></el-table-column>
         <el-table-column label="地址" prop="address"></el-table-column>
         <el-table-column label="操作" width="175px">
-          <template>
-            <!-- 修改按钮 -->
-            <el-button type="primary" icon="el-icon-edit" size="mini"></el-button>
+          <template slot-scope="scope">
+            <!-- 修改用户信息 -->
+            <el-button
+              type="primary"
+              icon="el-icon-edit"
+              size="mini"
+              @click="showEditDialog(scope.row)"
+            ></el-button>
             <!-- 删除按钮 -->
-            <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+            <el-button type="danger" icon="el-icon-delete" size="mini" @click="del(scope.row)"></el-button>
             <!-- 分配角色按钮 -->
             <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
               <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
@@ -64,22 +69,50 @@
       <!-- 内容主体区域 -->
       <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="80px">
         <el-form-item label="用户名称" prop="name">
-          <el-input v-model.trim="addForm.name"></el-input>
+          <el-input v-model.trim="addForm.name" clearable></el-input>
         </el-form-item>
         <el-form-item label="电子邮箱" prop="email">
-          <el-input v-model.trim="addForm.email"></el-input>
+          <el-input v-model.trim="addForm.email" clearable></el-input>
         </el-form-item>
         <el-form-item label="电话号码" prop="phone">
-          <el-input v-model.trim="addForm.phone"></el-input>
+          <el-input v-model.trim="addForm.phone" clearable></el-input>
         </el-form-item>
         <el-form-item label="收货地址" prop="address">
-          <el-input v-model.trim="addForm.address"></el-input>
+          <el-input v-model.trim="addForm.address" clearable></el-input>
         </el-form-item>
       </el-form>
       <!-- 底部区域 -->
       <span slot="footer" class="dialog-footer">
-        <el-button @click="addDialogVisible = false">取 消</el-button>
+        <el-button @click="Nosure">取 消</el-button>
         <el-button type="primary" @click="addVisitors">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 修改用户信息 -->
+    <el-dialog
+      title="修改个人信息"
+      :visible.sync="editDialogVisible"
+      width="40%"
+      center
+      @close="editDialogClosed"
+    >
+      <!-- 内容主体区域 -->
+      <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="100px">
+        <el-form-item label="用户名称" prop="name">
+          <el-input v-model.trim="editForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="电子邮箱" prop="email">
+          <el-input v-model.trim="editForm.email"></el-input>
+        </el-form-item>
+        <el-form-item label="电话号码" prop="phone">
+          <el-input v-model.trim="editForm.phone"></el-input>
+        </el-form-item>
+        <el-form-item label="收货地址" prop="address">
+          <el-input v-model.trim="editForm.address"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="updateVisitors">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -101,67 +134,118 @@ export default {
         name: "",
         email: "",
         phone: "",
-        address: ""
+        address: "",
       }, // 添加用户的表单数据
       // 添加表单的验证规则对象
       addFormRules: {
         name: [
           { required: true, message: "请输入用户名", trigger: "blur" },
           {
-            min: 3,
+            min: 2,
             max: 10,
-            message: "用户名的长度在3~10个字符之间",
-            trigger: "blur"
-          }
+            message: "用户名的长度在2~10个字符之间",
+            trigger: "blur",
+          },
         ],
         email: [
           { required: true, message: "请输入电子邮箱", trigger: "blur" },
           {
             type: "email",
             message: "请输入正确的邮箱地址",
-            trigger: ["blur", "change"]
-          }
+            trigger: ["blur", "change"],
+          },
         ],
         phone: [
           { required: true, message: "请输入电话号码", trigger: "blur" },
           {
             required: true,
-            pattern: /^1[34578]\d{9}$/, //可以写正则表达式呦呦呦
+            pattern: /^1[34578]\d{9}$/, //可以写正则表达式
             message: "目前只支持中国大陆的手机号码",
-            trigger: "blur"
-          }
+            trigger: "blur",
+          },
         ],
-        address: [{ required: true, message: "地址不能为空", trigger: "blur" }]
-      }
+        address: [{ required: true, message: "地址不能为空", trigger: "blur" }],
+      },
+      // 用来展示修改用户列表的
+      editDialogVisible: false,
+      // 查询到的用户信息对象
+      editForm: {},
+      // 修改用户列表的验证规则
+      editFormRules: {
+        name: [
+          { required: true, message: "请输入用户名", trigger: "blur" },
+          {
+            min: 2,
+            max: 10,
+            message: "用户名的长度在2~10个字符之间",
+            trigger: "blur",
+          },
+        ],
+        email: [
+          { required: true, message: "请输入电子邮箱", trigger: "blur" },
+          {
+            type: "email",
+            message: "请输入正确的邮箱地址",
+            trigger: ["blur", "change"],
+          },
+        ],
+        phone: [
+          { required: true, message: "请输入电话号码", trigger: "blur" },
+          {
+            required: true,
+            pattern: /^1[34578]\d{9}$/, //可以写正则表达式
+            message: "目前只支持中国大陆的手机号码",
+            trigger: "blur",
+          },
+        ],
+        address: [{ required: true, message: "地址不能为空", trigger: "blur" }],
+      },
     };
   },
   // 数据渲染
-  created: function() {
+  created: function () {
     this.getUserList();
   },
   methods: {
+    // 显示用户
     async getUserList() {
       // var that = this;
-      await this.$http.get("/api/visitors").then(res => {
+      await this.$http.get("/api/visitors").then((res) => {
         this.userList = res.data;
-        // console.log(res);
       });
     },
     // 添加用户
-    async addVisitors() {
-      await this.$http.post("/api/addVisitors", this.addForm).then(res => {
-        this.addDialogVisible = false;
-        this.getUserList();
-        console.log(res);
+    addVisitors() {
+      this.$refs.addFormRef.validate(async (valid) => {
+        if (!valid) return;
+        await this.$http.post("/api/addVisitors", this.addForm).then((res) => {
+          // 隐藏添加用户的对话框
+          this.$message({
+            type: "success",
+            message: "添加用户成功",
+            center: true,
+            showClose: true,
+            duration: 1000,
+          });
+          this.getUserList(); // 重新获取用户列表
+          this.$refs.addFormRef.resetFields(); // 当表单提交后清空表单内容
+          this.addDialogVisible = false;
+          console.log(res);
+        });
       });
     },
+    // 取消添加用户
+    Nosure() {
+      this.addDialogVisible = false; // 点击取消页面关闭
+      this.$refs.addFormRef.resetFields(); // 清空列表
+    },
     // 初始页currentPage、初始每页数据数pagesize和数据data
-    handleSizeChange: function(size) {
+    handleSizeChange: function (size) {
       this.pagesize = size;
       this.getUserList();
       // console.log(this.pagesize); //每页下拉显示数据
     },
-    handleCurrentChange: function(currentPage) {
+    handleCurrentChange: function (currentPage) {
       this.currentPage = currentPage;
       this.getUserList();
       // console.log(this.currentPage); //点击第几页
@@ -169,26 +253,66 @@ export default {
     search(keywords) {
       // 根据关键字，进行数据的搜索
       var newList = [];
-      this.userList.forEach(item => {
+      this.userList.forEach((item) => {
         if (item.name.indexOf(keywords) !== -1) {
           // newList.unshift(item);
           newList.push(item);
         }
       });
       return newList;
-    }
-  }
-  // watch: {
-  //   // 搜索功能的实现
-  //   search(val) {
-  //     if (this.search.length > 0) {
-  //       this.userList = this.userList.filter(item => ~item.name.indexOf(val));
-  //     } else if (this.search.length === 0) {
-  //       // 当清空输入框里面的内容，表格恢复正常
-  //       this.getUserList();
-  //     }
-  //   }
-  // }
+    },
+    // 删除用户
+    async del(row) {
+      await this.$confirm("是否删除该用户?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(async () => {
+        const res = await this.$http.delete(`/api/delVisitors/${row._id}`);
+        this.$message({
+          type: "success",
+          message: "删除成功!",
+          center: true,
+          duration: 800,
+          showClose: true,
+        });
+        this.getUserList();
+        console.log(res);
+      });
+    },
+    // 展示编辑用户的对话框
+    async showEditDialog(row) {
+      // console.log(_id);
+      // 让输入框里面的内容等于返回过来的结果
+      await this.$http.get(`/api/UpdateFind/${row._id}`).then((res) => {
+        this.editForm = res.data;
+      });
+      this.editDialogVisible = true; // 展示更新用户信息面板
+    },
+    // editDialogClosed() {
+    //   this.$refs.editFormRef.resetFields();
+    // },
+    async updateVisitors() {
+      this.$refs.editFormRef.validate(async (valid) => {
+        if (!valid) return;
+        await this.$http
+          .put(`/api/UpdateFind/${this.editForm._id}`, this.editForm)
+          .then((res) => {
+            this.$message({
+              type: "success",
+              message: "更改成功",
+              center: true,
+              showClose: true,
+              duration: 1000,
+            });
+            console.log(res);
+            this.getUserList(); // 重新获取用户列表
+            this.editDialogVisible = false;
+          });
+      });
+    },
+    // 取消更新
+  },
 };
 </script>
 

@@ -1,5 +1,8 @@
 // 引入数据库
 var mongoose = require("mongoose");
+mongoose.set("useNewUrlParser", true);
+mongoose.set("useFindAndModify", false);
+mongoose.set("useCreateIndex", true);
 // 连接数据库
 mongoose.connect("mongodb://127.0.0.1:27017/database", {
   useCreateIndex: true,

@@ -5,7 +5,7 @@
       <el-form class="form">
         <el-form-item class="form_item">
           <el-input
-            v-model="text"
+            v-model.trim="text"
             placeholder="请输入账号"
             class="input"
             prefix-icon="el-icon-user-solid"
@@ -17,7 +17,7 @@
         <el-form-item class="form_item">
           <el-input
             type="text"
-            v-model="password"
+            v-model.trim="password"
             v-if="pwd"
             prefix-icon="el-icon-lock"
             placeholder="请输入密码"
@@ -25,7 +25,7 @@
             @keyup.enter.native="login"
           ></el-input>
           <el-input
-            v-model="password"
+            v-model.trim="password"
             v-else
             type="password"
             placeholder="请输入密码"
@@ -122,13 +122,13 @@ export default {
       isShow: true,
       Change: false,
       del: true,
-      fullscreenLoading: false
+      fullscreenLoading: false,
     };
   },
   methods: {
     register() {
       this.$router.replace({
-        path: "/register"
+        path: "/register",
       });
     },
     // 图片高亮
@@ -155,10 +155,10 @@ export default {
         url: "api/login",
         data: {
           account: this.text,
-          password: this.password
-        }
+          password: this.password,
+        },
       })
-        .then(res => {
+        .then((res) => {
           // 持久化的存储机制
           // localStorage.token = res.data.token;
           this.fullscreenLoading = true;
@@ -168,22 +168,22 @@ export default {
               message: "登录成功",
               type: "success",
               center: true,
-              duration: 1400
+              duration: 1400,
             });
             // 将获取到的token存到本地浏览器中
             // sessionStorage.setItem("token", "true");
             window.sessionStorage.setItem("token", "true", res.data.token);
             this.$router.replace({
-              path: "/primary"
+              path: "/primary",
             });
           }, 1200);
           console.log(res);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less" scoped>
