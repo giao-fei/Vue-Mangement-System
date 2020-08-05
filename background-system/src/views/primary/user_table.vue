@@ -88,13 +88,7 @@
       </span>
     </el-dialog>
     <!-- 修改用户信息 -->
-    <el-dialog
-      title="修改个人信息"
-      :visible.sync="editDialogVisible"
-      width="40%"
-      center
-      @close="editDialogClosed"
-    >
+    <el-dialog title="修改个人信息" :visible.sync="editDialogVisible" width="40%" center>
       <!-- 内容主体区域 -->
       <el-form :model="editForm" :rules="editFormRules" ref="editFormRef" label-width="100px">
         <el-form-item label="用户名称" prop="name">
@@ -311,7 +305,6 @@ export default {
           });
       });
     },
-    // 取消更新
   },
 };
 </script>

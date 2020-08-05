@@ -14,18 +14,16 @@ module.exports = (app) => {
         message: "账号不存在",
       });
     }
+    // 引入生成token的插件
+    const jwt = require("jsonwebtoken");
     // 校验密码
     const isValid = require("bcryptjs").compareSync(
       password, // 客户端传过来的密码
       user.password // 数据库里面储存的密码
     );
-    if (!isValid) {
-      return res.status(422).send({
-        message: "密码错误",
-      });
-    }
-    // 返回token
-    const jwt = require("jsonwebtoken");
+    if (!isValid) return res.status(422).send({ message: "密码错误" });
+
+    // 生成token
     const token = jwt.sign({ id: String(user._id) }, SECRET);
     res.send({ user, token });
   });

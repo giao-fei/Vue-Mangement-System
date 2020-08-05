@@ -33,10 +33,10 @@ const routes = [
       requireAuth: true,
     },
     children: [
-      {
-        path: "",
-        redirect: "user_table",
-      },
+      // {
+      //   path: "",
+      //   redirect: "user_table",
+      // },
       {
         path: "user_table",
         component: () => import("../views/primary/user_table.vue"),

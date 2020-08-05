@@ -125,7 +125,7 @@
               <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <span style="color: #fff;">王小虎</span>
+          <span style="color: #fff;">{{list}}</span>
         </el-header>
 
         <el-main>
@@ -141,6 +141,7 @@ export default {
   name: "primary",
   data() {
     return {
+      list: [],
       fullscreenLoading: false,
       // 所有的菜单都闭合
       activeIndex: "1",
@@ -150,7 +151,7 @@ export default {
       openeds: ["1"],
       // 折叠与展开
       isCollapse: false,
-      isShow: true
+      isShow: true,
     };
   },
   methods: {
@@ -163,7 +164,7 @@ export default {
         lock: true,
         text: "退出中......",
         spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)"
+        background: "rgba(0, 0, 0, 0.7)",
       });
       setTimeout(() => {
         loading.close();
@@ -186,8 +187,16 @@ export default {
     hideCollapse() {
       this.isCollapse = !this.isCollapse;
       this.isShow = true;
-    }
-  }
+    },
+    // 将用户的姓名展示出来
+    loadComments() {
+      let list = sessionStorage.getItem("account");
+      this.list = list;
+    },
+  },
+  created() {
+    this.loadComments();
+  },
 };
 </script>
 

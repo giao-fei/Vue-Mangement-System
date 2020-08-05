@@ -173,8 +173,9 @@ export default {
             // 将获取到的token存到本地浏览器中
             // sessionStorage.setItem("token", "true");
             window.sessionStorage.setItem("token", "true", res.data.token);
+            window.sessionStorage.setItem("account", res.data.user.account);
             this.$router.replace({
-              path: "/primary",
+              path: "/primary/user_table",
             });
           }, 1200);
           console.log(res);

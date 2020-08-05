@@ -20,7 +20,6 @@ import "lib-flexible/flexible.js";
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
-
 new Vue({
   router,
   store,

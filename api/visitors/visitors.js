@@ -49,5 +49,4 @@ module.exports = (app) => {
       res.send(user);
     }
   });
-  // 搜索用户
 };
